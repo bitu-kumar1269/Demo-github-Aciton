@@ -1,0 +1,24 @@
+name: Deploy from Docker Hub
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Login Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Pull Latest Image
+        run: docker pull bitukumar/node-app:latest
+
+      - name: Run Container
+        run: |
+          docker run -d \
+          --name node-app \
+          -p 5002:3001 \
+          bitukumar/node-app:latest
