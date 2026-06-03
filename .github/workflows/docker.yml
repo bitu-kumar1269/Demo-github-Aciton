@@ -15,7 +15,11 @@ jobs:
 
       - name: Pull Latest Image
         run: docker pull bitukumar/node-app:latest
-
+      - name: Stop Existing Container
+        run: |
+         docker stop node-app || true
+         docker rm node-app || true
+            
       - name: Run Container
         run: |
           docker run -d \
